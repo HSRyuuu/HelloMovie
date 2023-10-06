@@ -1,0 +1,27 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head('index page')"></head>
+
+<body>
+<nav th:replace="fragments/common :: menu('index')"></nav>
+<div th:replace="fragments/common :: nav-padding"></div>
+
+<main class="container ">
+    <div class="bg-body-tertiary p-5 rounded">
+        <h1>영화 커뮤니티 HelloMovie</h1>
+        <p class="lead">사용 기술</p>
+        <p>- Java, SpringBoot 2.7.16</p>
+        <p>- gradle</p>
+        <p>- Spring Data JPA</p>
+
+        </p>
+        <a class="btn btn-lg btn-primary" href="../main" role="button">Go To Main &raquo;</a>
+    </div>
+</main>
+
+<!-- javascript bundle-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>
