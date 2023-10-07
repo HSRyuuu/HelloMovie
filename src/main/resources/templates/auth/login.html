@@ -1,0 +1,52 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head('index page')"></head>
+
+<body>
+<nav th:replace="fragments/common :: menu('index')"></nav>
+<div th:replace="fragments/common :: nav-padding"></div>
+
+<div class="container-fluid" style="max-width: 400px">
+    <h2>로그인</h2>
+    <hr>
+    <form>
+        <!-- Email input -->
+        <div class="form-outline mb-4">
+            <input type="email" id="form2Example1" class="form-control" />
+            <label class="form-label" for="form2Example1">Email address</label>
+        </div>
+
+        <!-- Password input -->
+        <div class="form-outline mb-4">
+            <input type="password" id="form2Example2" class="form-control" />
+            <label class="form-label" for="form2Example2">Password</label>
+        </div>
+
+        <!-- 2 column grid layout for inline styling -->
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-block mb-4">로그인</button>
+            </div>
+            <div class="col">
+                <a href="#" th:href="@{/register}">회원가입</a>
+                <a href="#" th:href="@{/findpassword}">비밀번호 찾기</a>
+            </div>
+        </div>
+
+        <!-- Register buttons -->
+        <div class="text-center">
+            <a href="https://kauth.kakao.com/oauth/authorize"
+            th:href="@{https://kauth.kakao.com/oauth/authorize(client_id=${key}, redirect_uri=${redirectUri}, response_type='code')}">
+                <img src="/images/kakao_login_medium_narrow.png">
+            </a>
+
+        </div>
+    </form>
+</div>
+
+<!-- javascript bundle-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

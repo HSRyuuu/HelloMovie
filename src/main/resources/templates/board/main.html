@@ -7,6 +7,35 @@
 
 <div class="container">
     <h1>main</h1>
+    <button class="btn btn-sm btn-secondary "
+            th:onclick="|location.href='@{/login}'|"
+            type="button">로그인</button>
+    <button class="btn btn-sm btn-secondary "
+            th:onclick="|location.href='@{/kakaologout}'|"
+            type="button">로그아웃</button>
+    <div>총 건수 : <span th:text = "${#lists.size(posts)}"></span></div>
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">번호</th>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">날짜</th>
+            <th scope="col">조회수</th>
+        </tr>
+        <tbody>
+        <tr th:each="post : ${posts}">
+            <th scope="row" th:text="${post.id}">1</th>
+            <td th:text="${post.title}">title</td>
+            <td th:text="${post.nickname}">writer</td>
+            <td th:text="${post.createdAt}">date</td>
+            <td th:text="${post.views}">views</td>
+        </tr>
+
+        </tbody>
+        </thead>
+    </table>
 </div>
 
 <!-- javascript bundle-->
