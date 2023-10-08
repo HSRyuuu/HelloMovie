@@ -23,16 +23,19 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    //implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     implementation 'com.google.code.gson:gson:2.9.0'
 
+    //swagger
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

@@ -1,0 +1,46 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head('회원가입 결과')"></head>
+
+<body>
+<nav th:replace="fragments/common :: menu('index', null)"></nav>
+<div th:replace="fragments/common :: nav-padding"></div>
+
+<div class="container ">
+    <div th:if="${result eq true}">
+        <h2>회원 가입 결과</h2>
+        <p>회원 가입이 완료되었습니다.</p>
+        <p>HelloMovie를 정상 이용하시려면 이메일 인증을 완료해주세요.</p>
+
+        <button class="btn btn-sm btn-secondary "
+                th:onclick="|location.href='@{/board/home}'|"
+                type="button">홈으로 이동</button>
+
+        <button class="btn btn-sm btn-primary "
+                th:onclick="|location.href='@{/login}'|"
+                type="button">로그인 하러 가기</button>
+    </div>
+
+    <div th:if="${result eq false}">
+        <h1>회원 가입 결과</h1>
+        <p>회원 가입에 실패하였습니다.</p>
+        <p>이미 존재하는 회원 이메일 입니다.</p>
+        <p>아이디 비밀번호 찾기를 해주세요.</p>
+
+        <button class="btn btn-sm btn-secondary "
+                th:onclick="|location.href='@{/board/home}'|"
+                type="button">홈으로 이동</button>
+
+        <button class="btn btn-sm btn-primary "
+                th:onclick="|location.href='@{/find-account}'|"
+                type="button">아이디 비밀번호 찾기</button>
+        <!-- TODO 아이디 비밀번호 찾기 -->
+    </div>
+</div>
+
+<!-- javascript bundle-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

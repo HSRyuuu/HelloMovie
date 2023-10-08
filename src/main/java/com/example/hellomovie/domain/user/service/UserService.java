@@ -1,8 +1,11 @@
 package com.example.hellomovie.domain.user.service;
 
 
-public interface UserService{
+import com.example.hellomovie.domain.user.dto.RegisterUser;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-    boolean register();
-    boolean userExists(String userId);
+public interface UserService extends UserDetailsService {
+
+    boolean register(RegisterUser input);
+    boolean emailAuth(String uuid);
 }

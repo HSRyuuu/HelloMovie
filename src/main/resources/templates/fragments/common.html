@@ -13,40 +13,63 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-black py-3" th:fragment="menu(menu)">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-black py-3" th:fragment="menu(menu, loginId)">
     <div class="container-fluid">
-        <a class="navbar-brand" href="../main">HelloMovie</a>
+        <a class="navbar-brand" href="../board/home">HelloMovie</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        <form th:fragment=""></form>
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
                 <li class="nav-item">
-                    <a class="nav-link " href="#" th:href="@{/main}" th:classappend="${menu  == 'main'} ? 'text-white' : ''">
-                        <span class="sr-only" th:if="${menu} == 'main'">🏠</span>
+                    <a class="nav-link " href="#" th:href="@{/board/home}" th:classappend="${menu  == 'home'} ? 'text-white' : ''">
+                        <span class="sr-only" th:if="${menu} == 'home'">🏠</span>
                         홈
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/hot}" th:classappend="${menu  == 'hot'} ? 'text-white' : ''">
+                    <a class="nav-link" href="#" th:href="@{/board/hot}" th:classappend="${menu  == 'hot'} ? 'text-white' : ''">
                         <span class="sr-only" th:if="${menu} == 'hot'">🔥</span>
                         핫게시판
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" th:href="@{/movie}" th:classappend="${menu  == 'movie'} ? 'text-white' : ''">
+                    <a class="nav-link" href="#" th:href="@{/board/movie}" th:classappend="${menu  == 'movie'} ? 'text-white' : ''">
                         <span class="sr-only" th:if="${menu} == 'movie'">📽</span>
                         영화 정보
                     </a>
                 </li>
 
             </ul>
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+
+            <div th:if="${#strings.isEmpty(loginId)} eq false"><!-- 로그인 된 상태-->
+                <div class="d-inline-block">
+                    <p th:text="${loginId} + ' '" style="color: white; font-size: large;"></p>
+                    <p></p>
+                </div>
+                <div class="d-inline-block">
+                    <button class="w-100 btn btn-secondary btn-sm">마이페이지</button>
+                </div>
+
+                <form class="d-inline-block" th:action="@{/logout}" method="post"
+                      onsubmit="return confirm('로그아웃 하시겠습니까?');">
+                    <button class="w-100 btn btn-secondary btn-sm"  type="submit">
+                        로그아웃
+                    </button>
+                </form>
+            </div>
+
+            <div th:if="${#strings.isEmpty(loginId)} eq true"><!-- 로그인 되지 않은 상태 -->
+                <button class="btn btn-sm btn-primary "
+                        th:onclick="|location.href='@{/login}'|"
+                        type="button">로그인</button>
+                <button class="btn btn-sm btn-primary "
+                        th:onclick="|location.href='@{/register}'|"
+                        type="button">회원 가입</button>
+            </div>
         </div>
     </div>
 </nav>

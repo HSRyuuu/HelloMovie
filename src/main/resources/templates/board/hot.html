@@ -1,8 +1,8 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/common :: head('Hot')"></head>
+<head th:replace="fragments/common :: head('HelloMovie 핫게시판')"></head>
 <body>
-<nav th:replace="fragments/common :: menu('hot')"></nav>
+<nav th:replace="fragments/common :: menu('hot', ${loginId})"></nav>
 <div th:replace="fragments/common :: nav-padding"></div>
 
 <div class="container">

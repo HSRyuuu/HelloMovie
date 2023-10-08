@@ -13,12 +13,13 @@ import java.util.HashMap;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/auth/kakao")
 @Controller
 public class KakaoAuthController {
 
     private final KakaoApi kakaoApi;
 
-    @RequestMapping("/kakaologin")
+    @RequestMapping("/login")
     public String kakaoLogin(@RequestParam String code, HttpSession session, Model model){
         // 1. 인가 코드 받기
         String accessToken = kakaoApi.getAccessToken(code);
@@ -32,15 +33,15 @@ public class KakaoAuthController {
         }
 
         model.addAttribute("userId", userInfo.get("email"));
-        return "redirect:/main";
+        return "redirect:/board/home";
     }
 
-    @RequestMapping("/kakaologout")
-    public String kakaoLogout(HttpSession session){
-        kakaoApi.kakaoLogout((String)session.getAttribute(SessionConst.ACCESS_TOKEN));
-        session.removeAttribute(SessionConst.USER_ID);
-        session.removeAttribute(SessionConst.ACCESS_TOKEN);
-
-        return "redirect:/main";
-    }
+//    @RequestMapping("/logout")
+//    public String kakaoLogout(HttpSession session){
+//        kakaoApi.kakaoLogout((String)session.getAttribute(SessionConst.ACCESS_TOKEN));
+//        session.removeAttribute(SessionConst.USER_ID);
+//        session.removeAttribute(SessionConst.ACCESS_TOKEN);
+//
+//        return "redirect:/board/home";
+//    }
 }

@@ -31,6 +31,11 @@ public class KakaoApi {
         return this.kakaoRedirectUri;
     }
 
+    /**
+     * 토큰 받아오기
+     * @param code
+     * @return
+     */
     public String getAccessToken(String code) {
         String accessToken = "";
         String refreshToken = "";

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/common :: head('Movie')"></head>
 <body>
-<nav th:replace="fragments/common :: menu('movie')"></nav>
+<nav th:replace="fragments/common :: menu('movie', ${loginId})"></nav>
 <div th:replace="fragments/common :: nav-padding"></div>
 
 <div class="container">
