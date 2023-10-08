@@ -19,6 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
+
     @GetMapping("/register")
     public String registerForm(Model model){
         model.addAttribute("userInput", new RegisterUser());

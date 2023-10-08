@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
@@ -19,17 +20,34 @@ import javax.servlet.http.HttpSession;
 public class AuthController {
     private final KakaoApi kakaoApi;
 
-    @GetMapping("/login")
+    /**
+     * 로그인 페이지
+     */
+    @GetMapping("/login-page")
+    public String loginForm(Model model){
+        addAuthorities(model);
+        return "user/login";
+    }
+
+
+    /**
+     * security를 위한 login url
+     */
+    @RequestMapping("/login")
     public String login(Model model){
+        addAuthorities(model);
+        return "user/login";
+    }
+
+    private void addAuthorities(Model model){
         AuthAttributes authAttributes = AuthAttributes.builder()
                 .kakaoApiKey(kakaoApi.getApiKey())
                 .kakaoRedirectUrl(kakaoApi.getREDIRECT_URI())
                 .build();
 
         model.addAttribute("authObject", authAttributes);
-
-        return "user/login";
     }
+
 
     @RequestMapping("/logout")
     public String kakaoLogout(@SessionAttribute HttpSession session){

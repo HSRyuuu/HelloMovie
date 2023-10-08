@@ -13,7 +13,7 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-black py-3" th:fragment="menu(menu, loginId)">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-black py-3" th:fragment="menu(menu, loginUser)">
     <div class="container-fluid">
         <a class="navbar-brand" href="../board/home">HelloMovie</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
@@ -45,10 +45,10 @@
 
             </ul>
 
-            <div th:if="${#strings.isEmpty(loginId)} eq false"><!-- 로그인 된 상태-->
+            <div th:if="${#strings.isEmpty(loginUser)} eq false"><!-- 로그인 된 상태-->
                 <div class="d-inline-block">
-                    <p th:text="${loginId} + ' '" style="color: white; font-size: large;"></p>
-                    <p></p>
+                    <p th:text="${loginUser} + ' '" style="color: white; font-size: large;"></p>
+
                 </div>
                 <div class="d-inline-block">
                     <button class="w-100 btn btn-secondary btn-sm">마이페이지</button>
@@ -62,9 +62,9 @@
                 </form>
             </div>
 
-            <div th:if="${#strings.isEmpty(loginId)} eq true"><!-- 로그인 되지 않은 상태 -->
+            <div th:if="${#strings.isEmpty(loginUser)} eq true"><!-- 로그인 되지 않은 상태 -->
                 <button class="btn btn-sm btn-primary "
-                        th:onclick="|location.href='@{/login}'|"
+                        th:onclick="|location.href='@{/login-page}'|"
                         type="button">로그인</button>
                 <button class="btn btn-sm btn-primary "
                         th:onclick="|location.href='@{/register}'|"

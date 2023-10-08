@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/common :: head('HelloMovie 핫게시판')"></head>
 <body>
-<nav th:replace="fragments/common :: menu('hot', ${loginId})"></nav>
+<nav th:replace="fragments/common :: menu('hot', ${loginUser})"></nav>
 <div th:replace="fragments/common :: nav-padding"></div>
 
 <div class="container">

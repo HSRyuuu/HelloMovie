@@ -7,16 +7,27 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MyException.class)
-    public String handleException(MyException e, Model model){
+    @ExceptionHandler(CustomException.class)
+    public String handleMyException(CustomException e, Model model){
         ErrorCode errorCode = e.getErrorCode();
         int statusCode = errorCode.getStatusCode();
         model.addAttribute("statusCode", statusCode);
         model.addAttribute("msg", errorCode.getDescription());
-        if(statusCode >= 400 && statusCode < 500){
-            return "error/4xx";
-        }else{
-            return "error/5xx";
-        }
+        return "error/error";
+    }
+
+    @ExceptionHandler(OpenException.class)
+    public String handleOpenException(OpenException e, Model model){
+        ErrorCode errorCode = e.getErrorCode();
+        int statusCode = errorCode.getStatusCode();
+        model.addAttribute("statusCode", statusCode);
+        model.addAttribute("msg", errorCode.getDescription());
+        return "error/open_error";
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleRuntimeException(RuntimeException e, Model model){
+        model.addAttribute("msg", e.getMessage());
+        return "error/error";
     }
 }

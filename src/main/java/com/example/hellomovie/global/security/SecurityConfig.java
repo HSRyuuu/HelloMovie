@@ -26,6 +26,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    LoginSuccessHandler getSuccesshandler(){
+        return new LoginSuccessHandler();
+    }
+
+    @Bean
     PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -46,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/auth/**",
+                        "/login-page",
                         "/register",
                         "/find-password",
                         "/board/home",
@@ -56,7 +62,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //로그인
         http.formLogin()
                 .loginPage("/login")
+                .defaultSuccessUrl("/")
                 .failureHandler(getAuthenticationFailureHandler())
+                .successHandler(getSuccesshandler())
                 .permitAll();
 
         //로그아웃

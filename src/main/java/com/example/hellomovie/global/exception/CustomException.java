@@ -1,19 +1,20 @@
 package com.example.hellomovie.global.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorResponse {
-    private int statusCode;
+@Getter @Setter
+public class CustomException extends RuntimeException{
     private ErrorCode errorCode;
     private String errorMessage;
 
-    public ErrorResponse(ErrorCode errorCode){
-        this.statusCode = errorCode.getStatusCode();;
+    public CustomException(ErrorCode errorCode){
+        super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.errorMessage = errorCode.getDescription();
     }

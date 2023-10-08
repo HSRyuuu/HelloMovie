@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/common :: head('HelloMovie 홈')"></head>
 <body>
-<nav th:replace="fragments/common :: menu('home', ${loginId})"></nav>
+<nav th:replace="fragments/common :: menu('home', ${loginUser})"></nav>
 <div th:replace="fragments/common :: nav-padding"></div>
 
 <div class="container">
     <h1>HOME</h1>
-    <h3 th:text="|login : ${loginId}|"></h3>
+    <h3 th:text="|login : ${loginUser}|"></h3>
     <div>총 건수 : <span th:text = "${#lists.size(posts)}"></span></div>
 
     <table class="table table-striped">

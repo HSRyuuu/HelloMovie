@@ -16,7 +16,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
         String msg = "로그인에 실패하였습니다.";
-        
+
         if (exception instanceof InternalAuthenticationServiceException) {
             msg = exception.getMessage();
         }
@@ -24,7 +24,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
         setDefaultFailureUrl("/login?error=true");
         request.setAttribute("errorMessage", msg);
 
-        log.info(msg + "AuthenticationFailure");
+        log.info("AuthenticationFailure" + msg);
 
         super.onAuthenticationFailure(request, response, exception);
     }

@@ -3,14 +3,18 @@ package com.example.hellomovie.domain.user.persist;
 import com.example.hellomovie.domain.user.dto.RegisterUser;
 import com.example.hellomovie.domain.user.type.RegisterType;
 import com.example.hellomovie.domain.user.type.UserStatus;
+import com.example.hellomovie.global.security.UserRole;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -19,7 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User {
+public class User{
 
     @Id
     private String userId; //email
@@ -59,4 +63,6 @@ public class User {
                 .lastModifiedAt(LocalDateTime.now())
                 .build();
     }
+
+
 }

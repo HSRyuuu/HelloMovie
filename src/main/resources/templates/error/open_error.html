@@ -30,20 +30,22 @@
         }
     </style>
 
-    <title>ACCESS_DENIED</title>
+    <title>ERROR_PAGE</title>
 </head>
 
 <body>
-<nav th:replace="fragments/common :: menu('home', null)"></nav>
-<div th:replace="fragments/common :: nav-padding"></div>
+<nav th:replace="fragments/common :: menu('index', null)"></nav>
 
 <div class="container ">
-    <h1>에러 페이지</h1>
-    <h1>500 Server Error </h1>
-    <p>Sorry, the server encountered an unexpected error and could not complete your request.</p>
-    <p>Please try again later or contact the website administrator.</p>
-    <a href="board.html"  th:href="@{/board/main}" style="text-decoration: underline">
-        HOME
+    <h1>오류 발생 !!! </h1>
+    <h2 th:text="|${statusCode} ERROR|"></h2>
+    <h5 th:text="${msg}"></h5>
+
+    <p>Sorry, the page you are looking for could not be found.<br>
+        Please check the URL or use the navigation menu to find what you are looking for.
+    </p>
+    <a href="board.html"  th:href="@{/board/home}" style="text-decoration: underline">
+        🏠 GO TO HOME
     </a>
 </div>
 
