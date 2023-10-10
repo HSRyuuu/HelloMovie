@@ -12,10 +12,12 @@ import lombok.Setter;
 public class CustomException extends RuntimeException{
     private ErrorCode errorCode;
     private String errorMessage;
+    private String occurredAt;
 
-    public CustomException(ErrorCode errorCode){
+    public CustomException(ErrorCode errorCode, String occurredAt){
         super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.errorMessage = errorCode.getDescription();
+        this.occurredAt = occurredAt;
     }
 }

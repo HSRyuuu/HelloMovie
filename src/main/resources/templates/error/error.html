@@ -34,14 +34,14 @@
 </head>
 
 <body>
-<div class="container "><h1>에러 페이지</h1>
-    <h2 th:text="|${statusCode} ERROR|"></h2>
-    <h5 th:text="${msg}"></h5>
-
-    <p>Sorry, the page you are looking for could not be found.<br>
-        Please check the URL or use the navigation menu to find what you are looking for.
+<div class="container ">
+    <h2>에러 페이지</h2>
+    <p>예상치 못한 에러가 발생했습니다.<br>
+        홈으로 이동해 주세요.
     </p>
-    <p></p>
+    <p>Sorry, An unexpected ERROR occurred. <br>
+        Please go th home page
+    </p>
     <a href="board.html"  th:href="@{/board/home}" style="text-decoration: underline">
         🏠 GO TO HOME
     </a>

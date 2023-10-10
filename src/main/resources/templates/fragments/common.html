@@ -45,7 +45,7 @@
 
             </ul>
 
-            <div th:if="${#strings.isEmpty(loginUser)} eq false"><!-- 로그인 된 상태-->
+            <div th:if="${#strings.equals(loginUser, '!none') eq false}"><!-- 로그인 된 상태-->
                 <div class="d-inline-block">
                     <p th:text="${loginUser} + ' '" style="color: white; font-size: large;"></p>
 
@@ -62,9 +62,9 @@
                 </form>
             </div>
 
-            <div th:if="${#strings.isEmpty(loginUser)} eq true"><!-- 로그인 되지 않은 상태 -->
+            <div th:if="${#strings.equals(loginUser, '!none') eq true}"><!-- 로그인 되지 않은 상태 -->
                 <button class="btn btn-sm btn-primary "
-                        th:onclick="|location.href='@{/login-page}'|"
+                        th:onclick="|location.href='@{/login}'|"
                         type="button">로그인</button>
                 <button class="btn btn-sm btn-primary "
                         th:onclick="|location.href='@{/register}'|"

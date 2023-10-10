@@ -21,32 +21,19 @@ public class AuthController {
     private final KakaoApi kakaoApi;
 
     /**
-     * 로그인 페이지
-     */
-    @GetMapping("/login-page")
-    public String loginForm(Model model){
-        addAuthorities(model);
-        return "user/login";
-    }
-
-
-    /**
-     * security를 위한 login url
+     * Spring security
      */
     @RequestMapping("/login")
     public String login(Model model){
-        addAuthorities(model);
-        return "user/login";
-    }
-
-    private void addAuthorities(Model model){
         AuthAttributes authAttributes = AuthAttributes.builder()
                 .kakaoApiKey(kakaoApi.getApiKey())
                 .kakaoRedirectUrl(kakaoApi.getREDIRECT_URI())
                 .build();
 
         model.addAttribute("authObject", authAttributes);
+        return "user/login";
     }
+
 
 
     @RequestMapping("/logout")

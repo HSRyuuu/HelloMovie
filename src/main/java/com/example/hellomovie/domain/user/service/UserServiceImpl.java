@@ -10,19 +10,15 @@ import com.example.hellomovie.global.exception.ErrorCode;
 import com.example.hellomovie.global.exception.OpenException;
 import com.example.hellomovie.global.mail.MailComponents;
 import com.example.hellomovie.global.mail.SendMailDto;
-import com.example.hellomovie.global.security.UserRole;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -52,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean emailAuth(String uuid) {
         User user = userRepository.findByEmailAuthKey(uuid)
-                .orElseThrow(() -> new OpenException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "UserService.emailAuth"));
 
         if(user.isEmailAuthYn()){
             throw new OpenException(ErrorCode.EMAIL_AUTH_ALREADY_COMPLETE);
@@ -68,32 +64,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getLoginUser(UserDetails userDetails) {
+    public UserDto getUserByUserDetails(UserDetails userDetails) {
         if(Objects.isNull(userDetails)){
-            UserDto userDto = new UserDto();
-            userDto.setUserId("");
-            return userDto;
+            log.info("EmptyUser");
+            return UserDto.emptyUser();
         }
-        User user = userRepository.findByUserId(userDetails.getUsername())
-                .orElseThrow(() -> new OpenException(ErrorCode.USER_NOT_FOUND));
-        return UserDto.fromEntity(user);
+        Optional<User> findUser = userRepository.findByUserId(userDetails.getUsername());
+        if(findUser.isPresent()){
+            return UserDto.fromEntity(findUser.get());
+        }else{
+            log.info("EmptyUser");
+            return UserDto.emptyUser();
+        }
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUserId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("회원 정보가 존재하지 않습니다."));
+                        .orElseThrow(() -> new UsernameNotFoundException("회원 정보가 존재하지 않습니다."));
         if(UserStatus.EMAIL_AUTH_REQUIRED.equals(user.getUserStatus())){
             throw new OpenException(ErrorCode.EMAIL_AUTH_REQUIRED);
         }
         if(UserStatus.STOP.equals(user.getUserStatus())){
             throw new OpenException(ErrorCode.USER_STOPPED);
         }
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(UserRole.USER));
-        log.info("loadUserByUsername");
-        return new org.springframework.security.core.userdetails.User
-                (user.getUserId(), user.getPassword(), grantedAuthorities);
+
+        return new org.springframework.security.core.userdetails.User(user.getUserId(), user.getPassword(), user.getAuthorities());
     }
 
 }

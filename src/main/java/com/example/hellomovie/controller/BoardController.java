@@ -3,6 +3,7 @@ package com.example.hellomovie.controller;
 import com.example.hellomovie.domain.post.dto.PostDto;
 import com.example.hellomovie.domain.post.service.PostService;
 import com.example.hellomovie.domain.user.dto.UserDto;
+import com.example.hellomovie.domain.user.persist.User;
 import com.example.hellomovie.domain.user.service.UserService;
 import com.example.hellomovie.global.session.SessionConst;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +30,17 @@ public class BoardController {
     @GetMapping("/home")
     public String list(Model model,
                        @AuthenticationPrincipal UserDetails userDetails){
-        UserDto user = userService.getLoginUser(userDetails);
-        log.info("loginUser : {}", user);
+        UserDto user = userService.getUserByUserDetails(userDetails);
+        log.info("user : {}", user);
+        model.addAttribute("loginUser", user.getNickname());
 
-        model.addAttribute("loginUser", user.getUserId());
 
         List<PostDto> list = postService.list();
         model.addAttribute("posts", list);
 
         return "board/home";
     }
+
     @GetMapping("/hot")
     public String hot(Model model,HttpSession session){
         String userId = (String)session.getAttribute(SessionConst.USER_ID);
@@ -56,5 +58,6 @@ public class BoardController {
 
         return "board/movie";
     }
+
 }
 

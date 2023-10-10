@@ -54,5 +54,9 @@ public class UserDto {
                 .build();
     }
 
+    public static UserDto emptyUser(){
+        return UserDto.builder().userId(" ").nickname("!none").build();
+    }
+
 
 }

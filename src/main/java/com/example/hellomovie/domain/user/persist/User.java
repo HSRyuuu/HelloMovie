@@ -23,7 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class User{
+public class User implements UserDetails {
 
     @Id
     private String userId; //email
@@ -47,6 +47,10 @@ public class User{
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 
+    public User(String userId){
+        this.userId = userId;
+    }
+
     public static User registerUser(RegisterUser input) {
         String encPassword = BCrypt.hashpw(input.getPassword(), BCrypt.gensalt());
 
@@ -65,4 +69,38 @@ public class User{
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(UserRole.USER));
+        if(this.registerType.equals(RegisterType.ADMIN)){
+            grantedAuthorities.add(new SimpleGrantedAuthority(UserRole.ADMIN));
+        }
+        return grantedAuthorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userId;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
