@@ -7,6 +7,7 @@
 
 <div class="container">
     <h1>HOME</h1>
+    <h4 th:text="|kakao : ${kakao}|"></h4>
     <div>총 건수 : <span th:text = "${#lists.size(posts)}"></span></div>
 
     <table class="table table-striped">
