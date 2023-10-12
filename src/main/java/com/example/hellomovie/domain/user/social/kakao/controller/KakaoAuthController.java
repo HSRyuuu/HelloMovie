@@ -1,16 +1,15 @@
 package com.example.hellomovie.domain.user.social.kakao.controller;
 
 import com.example.hellomovie.domain.user.site.dto.RegisterUser;
+import com.example.hellomovie.domain.user.site.dto.UserExistsResult;
 import com.example.hellomovie.domain.user.social.common.dto.SocialUserDto;
+import com.example.hellomovie.domain.user.social.common.service.SocialUserService;
 import com.example.hellomovie.domain.user.social.kakao.api.KakaoApi;
 import com.example.hellomovie.domain.user.social.kakao.dto.SocialUserInfo;
-import com.example.hellomovie.domain.user.social.common.service.SocialUserService;
-import com.example.hellomovie.domain.user.site.dto.UserExistsResult;
 import com.example.hellomovie.global.auth.service.AuthService;
 import com.example.hellomovie.global.auth.type.UserType;
 import com.example.hellomovie.global.exception.ErrorCode;
 import com.example.hellomovie.global.exception.OpenException;
-import com.example.hellomovie.global.session.SessionConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Objects;
 

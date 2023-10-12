@@ -1,5 +1,6 @@
 package com.example.hellomovie.global.auth.principal;
 
+import com.example.hellomovie.domain.user.site.persist.User;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,25 +10,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.*;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
 public class PrincipalDetails implements UserDetails{
 
-    private String userId;
-    private String password;
-    private String name;
+    private User user;
     private String nickname;
-    private UserType userType;
+
+    public PrincipalDetails(User user){
+        this.user = user;
+        this.nickname = user.getNickname();
+    }
 
     public static PrincipalDetails empty(){
         PrincipalDetails principalDetails = new PrincipalDetails();
-        principalDetails.setName("!none");
-        principalDetails.setNickname("!none");
-        principalDetails.setUserId("!none");
-        principalDetails.setPassword("!none");
         return principalDetails;
     }
 
@@ -35,7 +33,7 @@ public class PrincipalDetails implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        if(userType.equals(UserType.ADMIN)){
+        if(this.user.getUserType().equals(UserType.ADMIN)){
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }
         return grantedAuthorities;
@@ -43,12 +41,12 @@ public class PrincipalDetails implements UserDetails{
 
     @Override
     public String getPassword() {
-        return this.password;
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.userId;
+        return this.user.getUserId();
     }
 
     //계정 만료 여부

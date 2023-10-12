@@ -34,14 +34,4 @@ public class SocialUser {
 
     private String accessToken;
 
-    public static PrincipalDetails toPrincipalDetails(SocialUser user){
-        return PrincipalDetails.builder()
-                .userId(user.getUserId())
-                .password(user.getPassword())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .userType(user.getUserType())
-                .build();
-    }
-
 }

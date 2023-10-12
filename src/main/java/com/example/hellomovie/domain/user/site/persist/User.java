@@ -2,7 +2,6 @@ package com.example.hellomovie.domain.user.site.persist;
 
 import com.example.hellomovie.domain.user.site.dto.RegisterUser;
 import com.example.hellomovie.global.auth.type.UserStatus;
-import com.example.hellomovie.global.auth.principal.PrincipalDetails;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -58,16 +57,5 @@ public class User{
                 .lastModifiedAt(LocalDateTime.now())
                 .build();
     }
-
-    public static PrincipalDetails toPrincipalDetails(User user){
-        return PrincipalDetails.builder()
-                .userId(user.getUserId())
-                .password(user.getPassword())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .userType(UserType.SITE)
-                .build();
-    }
-
 
 }
