@@ -23,7 +23,6 @@ import java.util.Objects;
 public class BoardController {
 
     private final PostService postService;
-    private final UserService userService;
     private final AuthService authService;
 
     @GetMapping("/home")

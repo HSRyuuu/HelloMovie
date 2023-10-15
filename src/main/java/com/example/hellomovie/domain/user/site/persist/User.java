@@ -6,10 +6,7 @@ import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,6 +20,9 @@ import java.util.UUID;
 public class User{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String userId; //email
     private String password;
 
@@ -42,20 +42,5 @@ public class User{
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 
-    public static User registerUser(RegisterUser input) {
-        String encPassword = BCrypt.hashpw(input.getPassword(), BCrypt.gensalt());
-
-        return User.builder()
-                .userId(input.getUserId())
-                .password(encPassword)
-                .name(input.getName())
-                .nickname(input.getNickname())
-                .emailAuthKey(UUID.randomUUID().toString())
-                .userType(UserType.SITE)
-                .userStatus(UserStatus.EMAIL_AUTH_REQUIRED)
-                .createdAt(LocalDateTime.now())
-                .lastModifiedAt(LocalDateTime.now())
-                .build();
-    }
 
 }

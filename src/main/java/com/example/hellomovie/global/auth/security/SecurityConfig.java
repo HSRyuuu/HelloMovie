@@ -2,19 +2,29 @@ package com.example.hellomovie.global.auth.security;
 
 import com.example.hellomovie.global.auth.security.errorhandle.LoginSuccessHandler;
 import com.example.hellomovie.global.auth.security.errorhandle.UserAuthenticationFailureHandler;
+import com.example.hellomovie.global.auth.service.PrincipalDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final PrincipalDetailsService principalDetailsService;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     UserAuthenticationFailureHandler getFailureHandler() {
@@ -24,14 +34,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     LoginSuccessHandler getSuccessHandler() {
         return new LoginSuccessHandler();
-    }
-
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/favicon.ico", "/files/**", "/images/**");
-
-        super.configure(web);
     }
 
     @Override
@@ -50,15 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/", "/login/**", "/register/**", "/board/home")
                 .permitAll();
-
-        //oauth2
-//        http.oauth2Login()
-//                .loginPage("/login-page")
-//                .defaultSuccessUrl("/board/home")
-//                .failureUrl("/login-page")
-//                .userInfoEndpoint()
-//                .userService(principalOauth2UserService);
-//
 
         //로그인
         http.formLogin()
@@ -80,5 +73,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/error/denied");
 
         super.configure(http);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/favicon.ico", "/files/**", "/images/**");
+        super.configure(web);
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(principalDetailsService).passwordEncoder(passwordEncoder());
     }
 }

@@ -34,24 +34,6 @@ public class AuthController {
         model.addAttribute("authObject", authService.getAuthAttributes());
         return "user/login";
     }
-//
-//    @PostMapping("/login")
-//    public String login(@Validated @ModelAttribute("input") LoginInput input, BindingResult bindingResult,
-//                        Model model){
-//        LoginResult loginResult = authService.authenticateUser(input); //로그인 결과
-//        //Id가 존재하지 않는 유저인 경우
-//        if(!loginResult.isUserExistYn()){
-//            model.addAttribute("authObject", authService.getAuthAttributes());
-//            bindingResult.rejectValue("userId", "user doesn't exist", "존재하지 않는 회원입니다.");
-//            return "user/login";
-//        }else if(!loginResult.isPasswordCorrectYn()){
-//            model.addAttribute("authObject", authService.getAuthAttributes());
-//            bindingResult.rejectValue("password", "password incorrect", "비밀번호가 틀립니다.");
-//            return "user/login";
-//        }
-//
-//        return "redirect:/board/home";
-//    }
 
     @RequestMapping("/logout")
     public String logout(HttpSession session){

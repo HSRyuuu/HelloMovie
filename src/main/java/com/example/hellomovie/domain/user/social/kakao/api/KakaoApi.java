@@ -1,98 +1,104 @@
 package com.example.hellomovie.domain.user.social.kakao.api;
 
+import com.example.hellomovie.domain.user.social.kakao.model.KakaoProfile;
+import com.example.hellomovie.domain.user.social.kakao.model.OAuthToken;
+import com.example.hellomovie.global.auth.component.AuthConstUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class KakaoApi {
-    @Value("${kakao.api_key}")
-    private String kakaoApiKey;
-
-    @Value("${kakao.redirect_uri}")
-    private String kakaoRedirectUri;
-
-    public String getApiKey(){
-        return this.kakaoApiKey;
-    }
-    public String getREDIRECT_URI(){
-        return this.kakaoRedirectUri;
-    }
 
     /**
      * 토큰 받아오기
+     * RestTemplate 이용
      * @param code
-     * @return
      */
-    public String getAccessToken(String code) {
-        String accessToken = "";
-        String refreshToken = "";
+    public OAuthToken getOAuthToken(String code){
         String reqUrl = "https://kauth.kakao.com/oauth/token";
 
-        try{
-            URL url = new URL(reqUrl);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-            conn.setDoOutput(true); //OutputStream으로 POST 데이터를 넘겨주겠다는 옵션.
+        RestTemplate rt = new RestTemplate();
 
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
-            sb.append("&client_id=").append(kakaoApiKey);
-            sb.append("&redirect_uri=").append(kakaoRedirectUri);
-            sb.append("&code=").append(code);
+        //HttpHeader 오브젝트
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-            bw.write(sb.toString());
-            bw.flush();
+        //HttpBody 오브젝트
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "authorization_code");
+        params.add("client_id", AuthConstUtil.KAKAO_API_KEY);
+        params.add("redirect_uri", AuthConstUtil.KAKAO_REDIRECT_URL);
+        params.add("code", code);
 
-            int responseCode = conn.getResponseCode();
-            log.info("[KakaoApi.getAccessToken] responseCode = {}", responseCode);
+        //http 바디(params)와 http 헤더(headers)를 가진 엔티티
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest =
+                new HttpEntity<>(params, headers);
 
-            BufferedReader br;
-            if (responseCode >= 200 && responseCode <= 300) {
-                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            } else {
-                br = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            }
+        //reqUrl로 Http 요청 , POST 방식
+        ResponseEntity<String> response =
+                rt.exchange(reqUrl, HttpMethod.POST, kakaoTokenRequest, String.class);
 
-            String line = "";
-            StringBuilder responseSb = new StringBuilder();
-            while((line = br.readLine()) != null){
-                responseSb.append(line);
-            }
-            String result = responseSb.toString();
-            log.info("responseBody = {}", result);
+        String responseBody = response.getBody();
 
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
-            accessToken = element.getAsJsonObject().get("access_token").getAsString();
-            refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+        Gson gson = new Gson();
+        OAuthToken oAuthToken = gson.fromJson(responseBody, OAuthToken.class);
 
-            br.close();
-            bw.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return accessToken;
+        return oAuthToken;
     }
 
     /**
      *  사용자 정보 가져오기
      * @param accessToken
      */
-    public HashMap<String, Object> getUserInfo(String accessToken) {
+    public KakaoProfile getUserInfo(String accessToken) {
+        String reqUrl = "https://kapi.kakao.com/v2/user/me";
+
+        RestTemplate rt = new RestTemplate();
+
+        //HttpHeader 오브젝트
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        //http 헤더(headers)를 가진 엔티티
+        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest =
+                new HttpEntity<>(headers);
+
+        //reqUrl로 Http 요청 , POST 방식
+        ResponseEntity<String> response =
+                rt.exchange(reqUrl, HttpMethod.POST, kakaoProfileRequest, String.class);
+
+        KakaoProfile kakaoProfile = new KakaoProfile(response.getBody());
+
+        return kakaoProfile;
+    }
+
+
+    /**
+     *  사용자 정보 가져오기
+     * @param accessToken
+     */
+    public HashMap<String, Object> getUserInfo2(String accessToken) {
         HashMap<String, Object> userInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         try{

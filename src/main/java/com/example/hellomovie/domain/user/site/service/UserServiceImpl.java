@@ -3,6 +3,8 @@ package com.example.hellomovie.domain.user.site.service;
 import com.example.hellomovie.domain.user.site.dto.RegisterUser;
 import com.example.hellomovie.domain.user.site.persist.User;
 import com.example.hellomovie.domain.user.site.persist.UserRepository;
+import com.example.hellomovie.domain.user.social.common.SocialUserRegister;
+import com.example.hellomovie.global.auth.principal.PrincipalDetails;
 import com.example.hellomovie.global.auth.type.UserStatus;
 import com.example.hellomovie.global.exception.CustomException;
 import com.example.hellomovie.global.exception.ErrorCode;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -25,6 +28,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public boolean register(RegisterUser input) {
         //user 존재 여부 확인
         if(userRepository.existsByUserId(input.getUserId())){
@@ -32,12 +36,24 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        User user = User.registerUser(input);
+        User user = RegisterUser.toEntity(input);
         userRepository.save(user);
 
         mailComponents.sendMailForRegister(new SendMailDto(user.getUserId(), user.getNickname(), user.getEmailAuthKey()));
 
         return true;
+    }
+
+    @Override
+    @Transactional
+    public User socialUserRegister(SocialUserRegister socialUserRegister) {
+        User user = SocialUserRegister.toEntity(socialUserRegister);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public boolean userExists(String userId) {
+        return userRepository.existsByUserId(userId);
     }
 
     @Override
@@ -58,5 +74,10 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-
+    @Override
+    public PrincipalDetails getPrincipalDetails(String email) {
+        User user = userRepository.findByUserId(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "UserService.getPrincipalDetails"));
+        return new PrincipalDetails(user);
+    }
 }
