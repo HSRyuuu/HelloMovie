@@ -5,13 +5,10 @@ import com.example.hellomovie.global.auth.security.errorhandle.UserAuthenticatio
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @RequiredArgsConstructor
@@ -49,9 +46,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //ADMIN만 접근 가능
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN");
 
+        //접근 허용
         http.authorizeRequests()
-                .antMatchers("/", "/board/home")
-                        .permitAll();
+                .antMatchers("/", "/login/**", "/register/**", "/board/home")
+                .permitAll();
+
+        //oauth2
+//        http.oauth2Login()
+//                .loginPage("/login-page")
+//                .defaultSuccessUrl("/board/home")
+//                .failureUrl("/login-page")
+//                .userInfoEndpoint()
+//                .userService(principalOauth2UserService);
+//
 
         //로그인
         http.formLogin()

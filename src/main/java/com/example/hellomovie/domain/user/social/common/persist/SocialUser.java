@@ -4,11 +4,10 @@ import com.example.hellomovie.global.auth.type.UserStatus;
 import com.example.hellomovie.global.auth.principal.PrincipalDetails;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,10 +19,15 @@ import javax.persistence.Id;
 public class SocialUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String userId;
+
     private String password;
 
-    private String name;
+    private String email;
+
     private String nickname;
 
     @Enumerated(EnumType.STRING)
@@ -31,6 +35,11 @@ public class SocialUser {
 
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
+
+    private LocalDateTime createdAt;
+
+    private String provider;
+    private String providerId;
 
     private String accessToken;
 

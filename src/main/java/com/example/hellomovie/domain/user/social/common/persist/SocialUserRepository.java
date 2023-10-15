@@ -7,8 +7,4 @@ import java.util.Optional;
 
 @Repository
 public interface SocialUserRepository extends JpaRepository<SocialUser, String> {
-    Optional<SocialUser> findByUserId(String userId);
-    void deleteByUserId(String userId);
-    boolean existsByNickname(String nickname);
-
 }

@@ -27,6 +27,13 @@ public class AuthController {
         model.addAttribute("authObject", authService.getAuthAttributes());
         return "user/login";
     }
+
+    @RequestMapping("/login")
+    public String loginProcessing(Model model){
+        model.addAttribute("input", new LoginInput());
+        model.addAttribute("authObject", authService.getAuthAttributes());
+        return "user/login";
+    }
 //
 //    @PostMapping("/login")
 //    public String login(@Validated @ModelAttribute("input") LoginInput input, BindingResult bindingResult,

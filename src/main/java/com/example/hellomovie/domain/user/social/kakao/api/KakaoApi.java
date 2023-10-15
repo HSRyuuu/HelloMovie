@@ -92,8 +92,7 @@ public class KakaoApi {
      *  사용자 정보 가져오기
      * @param accessToken
      */
-    public HashMap<String, Object>
-    getUserInfo(String accessToken) {
+    public HashMap<String, Object> getUserInfo(String accessToken) {
         HashMap<String, Object> userInfo = new HashMap<>();
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
         try{
@@ -140,6 +139,7 @@ public class KakaoApi {
         }
         return userInfo;
     }
+
 
     public void kakaoLogout(String accessToken) {
         String reqUrl = "https://kapi.kakao.com/v1/user/logout";

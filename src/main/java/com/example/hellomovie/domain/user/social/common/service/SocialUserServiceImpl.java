@@ -25,39 +25,39 @@ public class SocialUserServiceImpl implements SocialUserService{
     private final SocialUserRepository socialUserRepository;
     private final UserRepository userRepository;
 
-
-    @Override
-    public void registerTemporarily(SocialUserInfo info) {
-        SocialUser socialUser = SocialUser.builder()
-                .userId(info.getEmail())
-                .name(info.getNickname())
-                .password(BCrypt.hashpw("kakao", BCrypt.gensalt()))
-                .accessToken(info.getAccessToken())
-                .userType(info.getUserType())
-                .userStatus(UserStatus.REGISTER_NOT_FINISHED)
-                .build();
-        socialUserRepository.save(socialUser);
-    }
-
-    @Override
-    public SocialUserDto registerFinally(RegisterUser input) {
-            SocialUser socialUser = socialUserRepository.findByUserId(input.getUserId())
-                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "SocialUserService.registerFinally"));
-            socialUser.setNickname(input.getNickname());
-            socialUser.setUserStatus(UserStatus.ING);
-            socialUserRepository.save(socialUser);
-            return SocialUserDto.fromEntity(socialUser);
-    }
-
-    @Override
-    public boolean existsByNickname(String nickname) {
-        return userRepository.existsByNickname(nickname) || socialUserRepository.existsByNickname(nickname);
-    }
-
-    @Override
-    public SocialUserDto getByUserId(String userId) {
-        SocialUser socialUser = socialUserRepository.findByUserId(userId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "SocialUserService.getByUserId"));
-        return SocialUserDto.fromEntity(socialUser);
-    }
+//
+//    @Override
+//    public void registerTemporarily(SocialUserInfo info) {
+//        SocialUser socialUser = SocialUser.builder()
+//                .userId(info.getEmail())
+//                .name(info.getNickname())
+//                .password(BCrypt.hashpw("kakao", BCrypt.gensalt()))
+//                .accessToken(info.getAccessToken())
+//                .userType(info.getUserType())
+//                .userStatus(UserStatus.REGISTER_NOT_FINISHED)
+//                .build();
+//        socialUserRepository.save(socialUser);
+//    }
+//
+//    @Override
+//    public SocialUserDto registerFinally(RegisterUser input) {
+//            SocialUser socialUser = socialUserRepository.findByUserId(input.getUserId())
+//                    .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "SocialUserService.registerFinally"));
+//            socialUser.setNickname(input.getNickname());
+//            socialUser.setUserStatus(UserStatus.ING);
+//            socialUserRepository.save(socialUser);
+//            return SocialUserDto.fromEntity(socialUser);
+//    }
+//
+//    @Override
+//    public boolean existsByNickname(String nickname) {
+//        return userRepository.existsByNickname(nickname) || socialUserRepository.existsByNickname(nickname);
+//    }
+//
+//    @Override
+//    public SocialUserDto getByUserId(String userId) {
+//        SocialUser socialUser = socialUserRepository.findByUserId(userId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND, "SocialUserService.getByUserId"));
+//        return SocialUserDto.fromEntity(socialUser);
+//    }
 }

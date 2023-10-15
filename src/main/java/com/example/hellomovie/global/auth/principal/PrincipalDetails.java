@@ -1,11 +1,13 @@
 package com.example.hellomovie.global.auth.principal;
 
 import com.example.hellomovie.domain.user.site.persist.User;
+import com.example.hellomovie.domain.user.social.common.persist.SocialUser;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 
@@ -23,7 +25,6 @@ public class PrincipalDetails implements UserDetails{
         this.user = user;
         this.nickname = user.getNickname();
     }
-
     public static PrincipalDetails empty(){
         PrincipalDetails principalDetails = new PrincipalDetails();
         return principalDetails;

@@ -13,4 +13,6 @@ import lombok.NoArgsConstructor;
 public class AuthAttributes {
         private String kakaoApiKey;
         private String kakaoRedirectUrl;
+
+
 }

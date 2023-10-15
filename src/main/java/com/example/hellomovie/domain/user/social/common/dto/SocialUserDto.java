@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class SocialUserDto {
 
+    private Long id;
     private String userId;
 
     private String name;
@@ -23,8 +24,8 @@ public class SocialUserDto {
 
     public static SocialUserDto fromEntity(SocialUser socialUser){
         return SocialUserDto.builder()
+                .id(socialUser.getId())
                 .userId(socialUser.getUserId())
-                .name(socialUser.getName())
                 .nickname(socialUser.getNickname())
                 .userType(socialUser.getUserType())
                 .userStatus(socialUser.getUserStatus())
