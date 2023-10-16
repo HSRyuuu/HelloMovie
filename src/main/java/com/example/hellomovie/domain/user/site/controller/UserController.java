@@ -1,9 +1,15 @@
 package com.example.hellomovie.domain.user.site.controller;
 
-import com.example.hellomovie.domain.user.site.dto.RegisterUser;
+import com.example.hellomovie.domain.user.site.dto.RegisterUserResult;
+import com.example.hellomovie.domain.user.site.model.RegisterUser;
+import com.example.hellomovie.domain.user.site.dto.UserDto;
 import com.example.hellomovie.domain.user.site.service.UserService;
+import com.example.hellomovie.global.auth.principal.PrincipalDetails;
+import com.example.hellomovie.global.mail.MailComponents;
+import com.example.hellomovie.global.mail.SendMailDto;
 import com.example.hellomovie.global.util.PasswordUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private final UserService userService;
+    private final MailComponents mailComponents;
 
 
     @GetMapping("/register")
@@ -34,10 +41,27 @@ public class UserController {
             bindingResult.rejectValue("password", "passwordIncorrect", "비밀번호가 일치하지 않습니다.");
             return "user/register";
         }
-        boolean result = userService.register(input);
+        //회원 가입
+        RegisterUserResult result = userService.register(input);
 
-        model.addAttribute("result", result);
+        //회원가입 성공 시
+        if(result.isSuccessYn()){
+            mailComponents.sendMailForRegister(
+                    new SendMailDto(result.getUserId(),
+                            result.getNickname(),
+                                result.getEmailAuthKey()));
+        }
+        model.addAttribute("result", result.isSuccessYn());
         return "user/register_result";
+    }
+
+    @GetMapping("/register/social")
+    public String registerSocialUser(@AuthenticationPrincipal PrincipalDetails principalDetails,
+                                     Model model){
+        model.addAttribute("loginNickname", principalDetails.getNickname());
+        model.addAttribute("user", principalDetails.getUser());
+
+        return "user/register_result_social";
     }
 
     @GetMapping("/auth/email-auth")

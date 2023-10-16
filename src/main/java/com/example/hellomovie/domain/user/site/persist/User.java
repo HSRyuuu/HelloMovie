@@ -1,14 +1,11 @@
 package com.example.hellomovie.domain.user.site.persist;
 
-import com.example.hellomovie.domain.user.site.dto.RegisterUser;
 import com.example.hellomovie.global.auth.type.UserStatus;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,6 +20,7 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String userId; //email
     private String password;
 

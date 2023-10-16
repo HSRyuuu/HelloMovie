@@ -1,0 +1,30 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/common :: head('회원가입 결과')"></head>
+
+<body>
+<nav th:replace="fragments/common :: menu('index', ${loginNickname})"></nav>
+<div th:replace="fragments/common :: nav-padding"></div>
+
+<div class="container ">
+    <div>
+        <h3>회원 가입이 완료되었습니다.</h3>
+        <ul>
+            <li th:text="|이메일: ${user.userId}|"></li>
+            <li th:text="|닉네임: ${user.nickname}|"></li>
+            <li th:text="|로그인 방법: ${user.userType}|"></li>
+        </ul>
+        <p><a href="/user/mypage">마이페이지</a>에서 닉네임을 수정해주세요.</p>
+
+        <button class="btn btn-sm btn-secondary "
+                th:onclick="|location.href='@{/board/home}'|"
+                type="button">홈으로 이동</button>
+    </div>
+</div>
+
+<!-- javascript bundle-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

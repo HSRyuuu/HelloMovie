@@ -1,14 +1,10 @@
-package com.example.hellomovie.domain.user.site.dto;
+package com.example.hellomovie.domain.user.site.model;
 
 import com.example.hellomovie.domain.user.site.persist.User;
 import com.example.hellomovie.global.auth.type.UserStatus;
 import com.example.hellomovie.global.auth.type.UserType;
 import com.example.hellomovie.global.util.PasswordUtils;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -17,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Builder
 public class RegisterUser {
     private String userId; //email
 

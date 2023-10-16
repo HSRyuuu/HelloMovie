@@ -1,4 +1,4 @@
-package com.example.hellomovie.domain.user.site.dto;
+package com.example.hellomovie.domain.user.site.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +13,4 @@ import lombok.NoArgsConstructor;
 public class AuthAttributes {
         private String kakaoApiKey;
         private String kakaoRedirectUrl;
-
-
 }

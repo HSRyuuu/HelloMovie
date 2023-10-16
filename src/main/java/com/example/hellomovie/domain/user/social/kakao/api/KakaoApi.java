@@ -32,7 +32,6 @@ public class KakaoApi {
     /**
      * 토큰 받아오기
      * RestTemplate 이용
-     * @param code
      */
     public OAuthToken getOAuthToken(String code){
         String reqUrl = "https://kauth.kakao.com/oauth/token";

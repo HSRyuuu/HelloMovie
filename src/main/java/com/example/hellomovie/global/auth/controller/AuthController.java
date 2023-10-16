@@ -1,7 +1,7 @@
 package com.example.hellomovie.global.auth.controller;
 
 import com.example.hellomovie.global.auth.dto.LoginInput;
-import com.example.hellomovie.global.auth.service.AuthService;
+import com.example.hellomovie.global.auth.service.AuthUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthUtils authUtils;
 
     /**
      * 일반 유저 로그인
@@ -24,14 +24,14 @@ public class AuthController {
     @GetMapping("/login-page")
     public String loginForm(Model model){
         model.addAttribute("input", new LoginInput());
-        model.addAttribute("authObject", authService.getAuthAttributes());
+        model.addAttribute("authObject", authUtils.getAuthAttributes());
         return "user/login";
     }
 
     @RequestMapping("/login")
     public String loginProcessing(Model model){
         model.addAttribute("input", new LoginInput());
-        model.addAttribute("authObject", authService.getAuthAttributes());
+        model.addAttribute("authObject", authUtils.getAuthAttributes());
         return "user/login";
     }
 

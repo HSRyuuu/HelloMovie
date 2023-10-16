@@ -5,21 +5,23 @@ import com.example.hellomovie.global.auth.type.UserStatus;
 import com.example.hellomovie.global.auth.type.UserType;
 import lombok.*;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto {
+    private Long id;
+
     private String userId; //email
     private String password;
 
     private String name;
     private String nickname;
-
-    private String accessToken;
 
     private boolean emailAuthYn;
     private LocalDateTime emailAuthDt;
@@ -33,6 +35,7 @@ public class UserDto {
 
     public static UserDto fromEntity(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .userId(user.getUserId())
                 .password(user.getPassword())
                 .name(user.getName())

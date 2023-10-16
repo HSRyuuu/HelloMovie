@@ -14,6 +14,13 @@ public class CustomException extends RuntimeException{
     private String errorMessage;
     private String occurredAt;
 
+    public CustomException(ErrorCode errorCode){
+        super(errorCode.getDescription());
+        this.errorCode = errorCode;
+        this.errorMessage = errorCode.getDescription();
+        this.occurredAt = "";
+    }
+
     public CustomException(ErrorCode errorCode, String occurredAt){
         super(errorCode.getDescription());
         this.errorCode = errorCode;

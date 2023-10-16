@@ -26,7 +26,7 @@ public class SocialUserRegister {
         return SocialUserRegister.builder()
                 .userId(kakaoProfile.getEmail())
                 .name(kakaoProfile.getEmail() + "_" + kakaoProfile.getId())
-                .nickname(kakaoProfile.getNickname())
+                .nickname(kakaoProfile.getNickname() + "_" + kakaoProfile.getId())
                 .userType(UserType.KAKAO)
                 .createdAt(kakaoProfile.getConnectedAt())
                 .build();
